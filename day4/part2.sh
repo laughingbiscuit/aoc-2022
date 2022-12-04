@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# how many pairs does one range full contain the other?
+# how many pairs have an overlap?
 
 cat input.txt | awk -F, '
 BEGIN { total=0 }
