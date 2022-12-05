@@ -1,11 +1,17 @@
 #!/bin/sh
 set -e
 
-cat test-input.txt | awk '
+cat input.txt | awk '
+function makeMove(src, dest) {
+  boat[dest]=boat[dest] substr(boat[src], length(boat[src]), 1)
+  boat[src]=substr(boat[src], 1, length(boat[src])-1)
+}
 { 
   if($1 == "move") {
     # make a move on initialised ship
- 
+    for(i = 0; i < $2; i++) {
+      makeMove($4, $6)
+    }
   }
   else if($0 != "") {
     # Initialise based on diagram
@@ -29,5 +35,17 @@ cat test-input.txt | awk '
       print row ":" boat[row]
     }
   }
+}
+END {
+  print "Finished with:"
+  for (row in boat) {
+    print row ":" boat[row]
+  }
+  print "Crates on top:"
+  top=""
+  for (row in boat) {
+    top=top substr(boat[row], length(boat[row]), 1)
+  }
+  print top
 }
 '
